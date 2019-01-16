@@ -1,0 +1,128 @@
+{% extends "site_base.html" %}
+
+{% load staticfiles %}
+
+{% load i18n %}
+
+{% block head_title %}pinax-project-account{% endblock %}
+
+{% block body_class %}home{% endblock %}
+
+{% block body_base %}
+<main>
+    <section class="jumbotron">
+        <div class="container">
+            {% include "_messages.html" %}
+            <h1>{% blocktrans %}Welcome to<div style="font-size: 6rem; font-weight: 600;">Comment Freely</div>{% endblocktrans %}</h1>
+            <p class="lead">
+                {% blocktrans %}
+                An Alternative Technology Comments Platform.
+                {% endblocktrans %}
+            </p>
+            {% if not user.is_authenticated %}
+            {% url "account_login" as login_url %}
+            {% url "account_signup" as signup_url %}
+            <p class="mb-5 lead">{% blocktrans %}You can <a href="{{ login_url }}" class="btn btn-secondary">Log In</a> or <a href="{{ signup_url }}" class="btn btn-primary">Sign Up</a> to try out the site.{% endblocktrans %}</p>
+            {% endif %}
+            <img src="{% static 'images/quill.png' %}" />
+        </div>
+    </section>
+    <section id="content-section">
+        <div id="content-body">
+            <h2 class="text-center">{% blocktrans %}What is Comment Freely?{% endblocktrans %}</h2>
+            <p class="lead">
+                {% blocktrans %}
+                <b>Comment Freely</b> is an open-source comments platform that can be used in any new or existing software project such as alternative social media sites, blogs, news sites and other applications.
+                {% endblocktrans %}
+            </p>
+            <p class="lead">{% blocktrans %}Thank you to all the <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#sponsorModal">individuals</button> who have sponsored the development of this project.{% endblocktrans %}</p>
+
+            <div class="feature-columns row">
+                <div class="col">
+                    <div class="icon"><i class="fa fa-caret-square-right fa-3x"></i></div>
+                    <div class="desc">
+                        {% blocktrans %}
+                        <b>Real Time</b> See new comments when they are posted or know when they are being written as you would within Instant Messaging and without needing to refresh the page.
+                        {% endblocktrans %}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="icon"><i class="fa fa-comments fa-3x"></i></div>
+                    <div class="desc">
+                        {% blocktrans %}
+                        <b>Socially interactive</b> Follow your friends and see what else they are commenting on, vote up and down and reply in-line.
+                        {% endblocktrans %}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="icon"><i class="fa fa-puzzle-piece fa-3x"></i></div>
+                    <div class="desc">
+                        {% blocktrans %}
+                        <b>Pluggable</b> Plug directly into your own projects and websites, designed to integrate so that you won't need a high level of technical expertise. Integrate logins so that it's a seamless part of any project.
+                        {% endblocktrans %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature-columns row">
+                <div class="col">
+                    <div class="icon"><i class="fa fa-heart fa-3x"></i></div>
+                    <div class="desc">
+                        {% blocktrans %}
+                        <b>Meme it up</b> Insert images, animations, videos, and other common Internet interactions into the conversation. Users will be able to earn badges that are associated with their profile.
+                        {% endblocktrans %}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="icon"><i class="fa fa-wrench fa-3x"></i></div>
+                    <div class="desc">
+                        {% blocktrans %}
+                        <b>Administration</b> Block spam, manage comments and users and assign administrative roles to your users so they can help. E.g. a video channel owner will be able to administrate for their own channel.
+                        {% endblocktrans %}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="icon"><i class="fa fa-chart-line fa-3x"></i></div>
+                    <div class="desc">
+                        {% blocktrans %}
+                        <b>Internet-scale</b> Allow millions of conversations to happen simultaneously.
+                        {% endblocktrans %}
+                    </div>
+                </div>
+            </div>
+        
+        </div>
+    </section>
+    <section>
+        <div class="container">
+            <p class="see-more lead text-center">
+                {% blocktrans %}
+                See <a href="https://github.com/BitChute/commentfreely">Github</a>
+                for more information.
+                {% endblocktrans %}
+            </p>
+        </div>
+    </section>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" id="sponsorModal" tabindex="-1" role="dialog" aria-labelledby="sponsorModalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="sponsorModalTitle">Sponsors</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

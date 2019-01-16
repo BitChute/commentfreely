@@ -1,0 +1,22 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<!-- Page Content -->
+
+	<h2>New Board</h2>
+	
+	<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">Save</button>
+    </div>
+	</form>
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

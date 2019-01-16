@@ -1,0 +1,102 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<!-- Page Content -->
+	<h2>My Sites</h2>
+
+	<table id="sites_table" class="display">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>url</th>
+            <th>delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+	</table>
+	
+	<a href="/dashboard/new_site" class="btn btn-primary" role="button">New Site</a>
+	
+	<hr>
+	
+	<h2>User Boards</h2>
+
+	<table id="boards_table" class="display">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>owner_id</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+	</table>
+	
+	<a href="/dashboard/new_board" class="btn btn-primary" role="button">New Board</a>
+
+	<div class="modal fade" id="deleteSiteModal" tabindex="-1" role="dialog" aria-labelledby="deleteSiteModalTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteSiteModalTitle">Confirm Deletion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" id="confirm-delete">Confirm Deletion</button>
+      </div>
+    </div>
+	</div>
+	</div>
+
+{% endblock %}
+
+{% block javascript %}
+	<script>
+	var last_id;
+	$('#sites_table').DataTable({
+    ajax: '/dashboard/get_user_sites',
+    dataSrc: 'data',
+    columns: [
+        { data: 'id' },
+        { data: 'name' },
+        { data: 'url' },
+        {
+        	"render": function ( data, type, full, meta ) {
+        		last_id = full.id;
+        		return '<button type="button" class="btn-sm btn-danger delete_site" data-toggle="modal" data-target="#deleteSiteModal">Delete</button>';
+            }
+        }
+    ]
+    });
+    
+    $('#confirm-delete').on('click', function(event) {
+		console.log("clickit " + last_id);
+		$('#deleteSiteModal').modal('toggle');
+		$.post('/dashboard/delete_user_site', { 'display_id': last_id, 'csrfmiddlewaretoken': '{{csrf_token}}' }, function(response) { 
+			document.location.reload();
+		});
+	});
+	
+	$('#boards_table').DataTable({
+    ajax: '/dashboard/get_user_boards',
+    dataSrc: 'data',
+    columns: [
+        { data: 'id' },
+        { data: 'name' },
+        { data: 'owner_id' }
+    ]
+    });
+	</script>
+{% endblock %}

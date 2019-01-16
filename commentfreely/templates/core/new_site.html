@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<!-- Page Content -->
+
+	<h2>New Site</h2>
+	
+	{% if user_sites %}
+	
+	<div class="alert alert-warning" role="alert">
+		You have reached the maximum number of sites on this account.
+	</div>
+	
+	{% else %}
+	
+	<form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="form-actions">
+      <button class="btn btn-primary" type="submit">Save</button>
+    </div>
+	</form>
+	
+	{% endif %} 
+
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

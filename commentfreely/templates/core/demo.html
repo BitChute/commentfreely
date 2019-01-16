@@ -1,0 +1,91 @@
+<!-- {% load i18n %} -->
+<!-- {% load staticfiles %} -->
+<!doctype html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<meta name=description content="">
+		<meta name=viewport content="width=device-width, initial-scale=1">
+		<title>Jquery Comments Plugin</title>
+
+		
+		<link href="{% static 'core/css/jquery-comments.css' %}" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+		<script src="{% static 'core/js/jquery-comments.js' %}"></script>
+		
+	</head>
+	<body>
+		
+		<p>hello: {{user.username}}</p>
+		
+		<div id="comments-container"></div>
+		
+		<script>
+		
+		var siteid = 'OzCqmaPIZzKE';
+		var threadid = 'abcdefghijkl';
+		var boardid = 'default';
+			
+		$('#comments-container').comments({
+			enableAttachments: false,
+			forceResponsive: true,
+			readOnly: false,
+			roundProfilePictures: true,
+			getComments: function(success, error) {
+				$.ajax({ type: 'get', url: '/api/get_comments/'+siteid+'/'+boardid+'/'+threadid, success: function(userArray) { success(userArray) }, error: error });
+			},
+			getUsers: function(success, error) {
+				$.ajax({ type: 'get', url: '/api/get_users/'+siteid+'/'+boardid+'/'+threadid, success: function(userArray) { success(userArray) }, error: error });
+			},
+			postComment: function(data, success, error) {
+				console.log("postComment");
+				console.log(data);
+				$.ajax({ 
+					type: 'post', 
+					url: '/api/post_comment/'+siteid+'/'+boardid+'/'+threadid,
+					data: { csrfmiddlewaretoken : '{{ csrf_token }}', user_id: '{{ user.profile.display_id }}', commentData: data },
+					success: function(userArray) { success(userArray); console.log(userArray); },
+					error: error
+				});
+			},
+			putComment: function(data, success, error) {
+				console.log("putComment");
+				$.ajax({ 
+					type: 'post', 
+					url: '/api/put_comment/'+siteid+'/'+boardid+'/'+threadid,
+					data: { csrfmiddlewaretoken : '{{ csrf_token }}', user_id: '{{ user.profile.display_id }}', commentData: data },
+					error: error
+				});
+				success(data);
+			},
+			deleteComment: function(data, success, error) {
+				console.log("deleteComment " + data.id);
+				$.ajax({ 
+					type: 'post', 
+					url: '/api/delete_comment/'+siteid+'/'+boardid+'/'+threadid,
+					data: { csrfmiddlewaretoken : '{{ csrf_token }}', user_id: '{{ user.profile.display_id }}', commentData: data },
+					error: error
+				});
+				success();
+			},
+			upvoteComment: function(data, success, error) {
+				console.log("upvoteComment");
+				$.ajax({ 
+					type: 'post', 
+					url: '/api/upvote_comment/'+siteid+'/'+boardid+'/'+threadid,
+					data: { csrfmiddlewaretoken : '{{ csrf_token }}', user_id: '{{ user.profile.display_id }}', commentData: data },
+					error: error
+				});
+				success(data);
+			},
+			uploadAttachments: function(dataArray, success, error) {
+				console.log("uploadAttachments");
+				success(dataArray);
+			},
+		});
+			
+		</script>
+		
+	</body>
+</html>

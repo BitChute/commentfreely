@@ -1,0 +1,90 @@
+<!-- {% load i18n %} -->
+<!-- {% load staticfiles %} -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'core/images/favicon.ico' %}">
+
+    <title>Comment Freely</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'core/css/bootstrap-min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'core/css/dashboard.css' %}" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    
+    <link href="{% static 'core/css/comments.css' %}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	
+  </head>
+
+  <body>
+  	
+  	<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/"><span data-feather="feather"></span>  Comment Freely</a>
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="#">Sign out</a>
+        </li>
+      </ul>
+    </nav>
+    
+	
+    
+    <div class="container-fluid">
+      <div class="row">
+      		{% include 'core/sidebar.html' with overview_active="active" %}	
+      </div>
+	</div>
+    
+    
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+    	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    		<h1 class="h2">Dashboard</h1>
+    		<div class="btn-toolbar mb-2 mb-md-0">
+    			<button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+    				<span data-feather="link-2"></span>
+    				sitename
+    			</button>
+    		</div>
+    	</div>
+    	
+    	{% block body %}{% endblock %}
+    	
+    </main>
+    
+    <div class="preloader"></div>
+  	
+  	
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="{% static 'core/js/popper-min.js' %}"></script>
+    <script src="{% static 'core/js/bootstrap-min.js' %}"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+      feather.replace()
+    </script>
+    
+    <script>
+    $(window).on("load", function (e) {
+    	$('.preloader').fadeOut('xslow');
+    })
+	</script>
+    
+    {% block javascript %}{% endblock %}
+    
+
+
+  </body>
+</html>

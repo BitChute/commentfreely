@@ -1,0 +1,88 @@
+{% extends 'core/base.html' %}
+{% load i18n %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<!-- Page Content -->
+	<h2>Code</h2>
+	
+	<div>
+		<p>You can install the code with the following instructions.</p>
+		<p>TODO</p>
+	</div>
+	
+	<div id="comments-container"></div>
+
+
+{% endblock %}
+
+{% block javascript %}
+		<script src="{% static 'core/js/comments.js' %}"></script>
+
+		<script>
+		
+		var siteid = '{{site_id}}';
+		var threadid = 'default';
+		var boardid = '{{board_id}}';
+			
+		$('#comments-container').comments({
+			enableAttachments: false,
+			forceResponsive: true,
+			readOnly: false,
+			roundProfilePictures: true,
+			getComments: function(success, error) {
+				$.ajax({ type: 'get', url: '/api/get_comments/'+siteid+'/'+boardid+'/'+threadid, success: function(userArray) { success(userArray) }, error: error });
+			},
+			getUsers: function(success, error) {
+				$.ajax({ type: 'get', url: '/api/get_users/'+siteid+'/'+boardid+'/'+threadid, success: function(userArray) { success(userArray) }, error: error });
+			},
+			postComment: function(data, success, error) {
+				console.log("postComment");
+				console.log(data);
+				$.ajax({ 
+					type: 'post', 
+					url: '/api/post_comment/'+siteid+'/'+boardid+'/'+threadid,
+					data: { csrfmiddlewaretoken : '{{ csrf_token }}', user_id: '{{ user.profile.display_id }}', commentData: data },
+					success: function(userArray) { success(userArray); console.log(userArray); },
+					error: error
+				});
+			},
+			putComment: function(data, success, error) {
+				console.log("putComment");
+				$.ajax({ 
+					type: 'post', 
+					url: '/api/put_comment/'+siteid+'/'+boardid+'/'+threadid,
+					data: { csrfmiddlewaretoken : '{{ csrf_token }}', user_id: '{{ user.profile.display_id }}', commentData: data },
+					error: error
+				});
+				success(data);
+			},
+			deleteComment: function(data, success, error) {
+				console.log("deleteComment " + data.id);
+				$.ajax({ 
+					type: 'post', 
+					url: '/api/delete_comment/'+siteid+'/'+boardid+'/'+threadid,
+					data: { csrfmiddlewaretoken : '{{ csrf_token }}', user_id: '{{ user.profile.display_id }}', commentData: data },
+					error: error
+				});
+				success();
+			},
+			upvoteComment: function(data, success, error) {
+				console.log("upvoteComment");
+				$.ajax({ 
+					type: 'post', 
+					url: '/api/upvote_comment/'+siteid+'/'+boardid+'/'+threadid,
+					data: { csrfmiddlewaretoken : '{{ csrf_token }}', user_id: '{{ user.profile.display_id }}', commentData: data },
+					error: error
+				});
+				success(data);
+			},
+			uploadAttachments: function(dataArray, success, error) {
+				console.log("uploadAttachments");
+				success(dataArray);
+			},
+		});
+			
+		</script>
+{% endblock %}
