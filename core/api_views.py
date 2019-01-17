@@ -90,7 +90,7 @@ def get_comments(request, site_id, board_id, thread_id):
 		if c.modified:
 			modified = str(c.modified)
 			
-		comment = { "id": c.comment_id, "parent": parent, "created": str(c.date_created), "modified": modified, "content": c.content, "pings": [], "creator": c.creator.display_id, "fullname": c.creator.display_name, "profile_picture_url": "https://viima-app.s3.amazonaws.com/media/public/defaults/user-icon.png", "created_by_admin": False, "created_by_current_user": created_by_current_user, "upvote_count": c.up_vote_count, "user_has_upvoted": user_has_upvoted, "is_new": False }
+		comment = { "id": c.comment_id, "parent": parent, "created": str(c.date_created), "modified": modified, "content": c.content, "pings": [], "creator": c.creator.display_id, "fullname": c.creator.display_name, "created_by_admin": False, "created_by_current_user": created_by_current_user, "upvote_count": c.up_vote_count, "user_has_upvoted": user_has_upvoted, "is_new": False }
 		if c.file_url:
 			comment['file_url'] = c.file_url
 			comment['file_mime_type'] = c.file_mime_type
@@ -118,7 +118,7 @@ def post_comment(request, site_id, board_id, thread_id):
 	if data["parent"]:
 		parent = data["parent"]
 		
-	comment = { "id": data['id'], "parent": parent, "created": data["created"], "modified": data["modified"], "content": data["content"], "pings": [], "creator": request.user.profile.display_id, "fullname": request.user.profile.display_name, "profile_picture_url": "https://viima-app.s3.amazonaws.com/media/public/defaults/user-icon.png", "created_by_admin": False, "created_by_current_user": True, "upvote_count": 0, "user_has_upvoted": False, "is_new": False }
+	comment = { "id": data['id'], "parent": parent, "created": data["created"], "modified": data["modified"], "content": data["content"], "pings": [], "creator": request.user.profile.display_id, "fullname": request.user.profile.display_name, "created_by_admin": False, "created_by_current_user": True, "upvote_count": 0, "user_has_upvoted": False, "is_new": False }
 	if file_mime_type:
 		comment['file_mime_type'] = file_mime_type[0]
 		comment['file_url'] = file_url
